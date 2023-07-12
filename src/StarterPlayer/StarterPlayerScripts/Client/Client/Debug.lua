@@ -7,6 +7,8 @@ local Fusion = get("fusion")
 
 local PlayerGUI = Player:WaitForChild("PlayerGui")
 
+_G.DebugVisible = true
+
 local ColorCodes = {
 	[Enum.MessageType.MessageError] = Color3.new(0.658823, 0.121568, 0.121568),
 	[Enum.MessageType.MessageInfo] = Color3.new(0.356862, 0.560784, 0.094117),
@@ -30,7 +32,8 @@ local function Display(Parent)
 		Size = UDim2.fromScale(0.5, 1),
 		BackgroundTransparency = 1,
 		[Fusion.Children] = Fusion.New("UIListLayout")({
-			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			FillDirection = Enum.FillDirection.Vertical,
+			VerticalAlignment = Enum.VerticalAlignment.Bottom,
 		}),
 
 		Parent = Parent,
@@ -41,10 +44,10 @@ local function Entry(text, colour, parent)
 	return Fusion.New("TextLabel")({
 		Font = Enum.Font.Code,
 		AutomaticSize = Enum.AutomaticSize.XY,
-		FillDirection = Enum.FillDirection.Vertical,
-		VerticalAlignment = Enum.VerticalAlignment.Bottom,
+		TextXAlignment = Enum.TextXAlignment.Left,
 		TextScaled = true,
-		BackgroundTransparency = 1,
+		BackgroundTransparency = 0.4,
+		BackgroundColor3 = Color3.new(0, 0, 0),
 		TextColor3 = colour,
 		Text = text,
 		[Fusion.Children] = Fusion.New("UITextSizeConstraint")({
@@ -60,25 +63,15 @@ local Debug = {
 	Interface = nil :: Frame,
 }
 
-do
-	_G.DebugControl = Instance.new("BoolValue")
-	_G.DebugControl.Value = false
-	_G.DebugControl.Changed:Connect(function(v)
-		if v then
-			Debug.Hide()
-		else
-			Debug.Unhide()
-		end
-	end)
-end
-
 function Debug.Init()
 	Debug.Gui = Screen()
 	Debug.Interface = Display(Debug.Gui)
 
 	local function MessageOut(message, messageType)
-		local Color = ColorCodes[messageType]
-		Debris:AddItem(Entry(message, Color, Debug.Interface), 4)
+		if _G.DebugVisible then
+			local Color = ColorCodes[messageType]
+			Debris:AddItem(Entry(message, Color, Debug.Interface), 4)
+		end
 	end
 
 	Logging.MessageOut:Connect(MessageOut)

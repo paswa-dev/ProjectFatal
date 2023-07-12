@@ -24,5 +24,5 @@ do
 end
 
 _G.get = nil
-script.Client:Destroy()
-script.Main:Destroy()
+Client:Destroy()
+Main:Destroy()
