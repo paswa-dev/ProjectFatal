@@ -1,7 +1,7 @@
 local Player = game:GetService("Players").LocalPlayer
 local PlayerGUI = Player:WaitForChild("PlayerGui")
 
-local function DebugGui()
+local function Gui()
 	local Bin = Instance.new("ScreenGui")
 	Bin.Name = "DebugVisual"
 	Bin.IgnoreGuiInset = true
@@ -26,7 +26,7 @@ do
 end
 
 function Debug.Init()
-	Debug.Bin = DebugGui()
+	Debug.Bin = Gui()
 end
 
 return Debug
